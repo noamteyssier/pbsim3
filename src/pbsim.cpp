@@ -55,17 +55,17 @@ struct sim_t {
   unsigned int seed;
   double depth;
   double accuracy_mean, accuracy_max, accuracy_min;
-  long len_min, len_max; 
-  double len_mean, len_sd; 
+  long len_min, len_max;
+  double len_mean, len_sd;
   long long len_quota;
   long sub_ratio, ins_ratio, del_ratio;
   double sub_rate, ins_rate, del_rate;
   long res_num;
-  long long res_len_total; 
+  long long res_len_total;
   double res_depth;
   double res_accuracy_mean, res_accuracy_sd;
-  long res_len_min, res_len_max; 
-  double res_len_mean, res_len_sd; 
+  long res_len_min, res_len_max;
+  double res_len_mean, res_len_sd;
   long res_sub_num, res_ins_num, res_del_num;
   double res_sub_rate, res_ins_rate, res_del_rate;
   char *prefix, *outfile_ref, *outfile_fq, *outfile_maf, *outfile_bam;
@@ -534,7 +534,7 @@ int main (int argc, char** argv) {
     exit(-1);
   }
 
-  // Setting of simulation parameters     
+  // Setting of simulation parameters
   if (set_sim_param() == FAILED) {
     exit(-1);
   }
@@ -706,7 +706,7 @@ int main (int argc, char** argv) {
 
       if (sim.pass_num == 1) {
         sprintf(sim.outfile_fq, "%s_%04ld.fq.gz", sim.prefix, genome.num);
-        sprintf(sim.outfile_gzipfq, "gzip > %s", sim.outfile_fq);
+        sprintf(sim.outfile_gzipfq, "crabz > %s", sim.outfile_fq);
         if ((fp_fq = popen(sim.outfile_gzipfq, "w")) == NULL) {
           fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_fq);
           return FAILED;
@@ -723,7 +723,7 @@ int main (int argc, char** argv) {
       }
 
       sprintf(sim.outfile_maf, "%s_%04ld.maf.gz", sim.prefix, genome.num);
-      sprintf(sim.outfile_gzipmaf, "gzip > %s", sim.outfile_maf);
+      sprintf(sim.outfile_gzipmaf, "crabz > %s", sim.outfile_maf);
       if ((fp_maf = popen(sim.outfile_gzipmaf, "w")) == NULL) {
         fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_maf);
         return FAILED;
@@ -769,7 +769,7 @@ int main (int argc, char** argv) {
 
     if (sim.pass_num == 1) {
       sprintf(sim.outfile_fq, "%s.fq.gz", sim.prefix);
-      sprintf(sim.outfile_gzipfq, "gzip > %s", sim.outfile_fq);
+      sprintf(sim.outfile_gzipfq, "crabz > %s", sim.outfile_fq);
       if ((fp_fq = popen(sim.outfile_gzipfq, "w")) == NULL) {
         fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_fq);
         return FAILED;
@@ -786,7 +786,7 @@ int main (int argc, char** argv) {
     }
 
     sprintf(sim.outfile_maf, "%s.maf.gz", sim.prefix);
-    sprintf(sim.outfile_gzipmaf, "gzip > %s", sim.outfile_maf);
+    sprintf(sim.outfile_gzipmaf, "crabz > %s", sim.outfile_maf);
     if ((fp_maf = popen(sim.outfile_gzipmaf, "w")) == NULL) {
       fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_maf);
       return FAILED;
@@ -822,7 +822,7 @@ int main (int argc, char** argv) {
 
     if (sim.pass_num == 1) {
       sprintf(sim.outfile_fq, "%s.fq.gz", sim.prefix);
-      sprintf(sim.outfile_gzipfq, "gzip > %s", sim.outfile_fq);
+      sprintf(sim.outfile_gzipfq, "crabz > %s", sim.outfile_fq);
       if ((fp_fq = popen(sim.outfile_gzipfq, "w")) == NULL) {
         fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_fq);
         return FAILED;
@@ -839,7 +839,7 @@ int main (int argc, char** argv) {
     }
 
     sprintf(sim.outfile_maf, "%s.maf.gz", sim.prefix);
-    sprintf(sim.outfile_gzipmaf, "gzip > %s", sim.outfile_maf);
+    sprintf(sim.outfile_gzipmaf, "crabz > %s", sim.outfile_maf);
     if ((fp_maf = popen(sim.outfile_gzipmaf, "w")) == NULL) {
       fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_maf);
       return FAILED;
@@ -1038,7 +1038,7 @@ int get_genome_seq() {
 
   nstart = 0;
   nend = 0;
-  nnum = 1; 
+  nnum = 1;
   for(i=1; i<=genome.len; i++) {
     if ((i < genome.len ) && (genome.seq[i-1] == genome.seq[i])) {
       nend = i;
@@ -1258,7 +1258,7 @@ int get_sample_inf() {
               sample.len_total_filtered += len;
 
               freq_len[len] ++;
-              value = (int)(accuracy * 100000 + 0.5); 
+              value = (int)(accuracy * 100000 + 0.5);
               freq_accuracy[value] ++;
 
               fprintf(fp_filtered, "%s\n", qc_tmp);
@@ -1300,7 +1300,7 @@ int get_sample_inf() {
 
     variance = 0.0;
     for (i=0; i<=sim.len_max; i++) {
-      if (freq_len[i] > 0) { 
+      if (freq_len[i] > 0) {
         variance += pow((sample.len_mean_filtered - i), 2) * freq_len[i];
       }
     }
@@ -1308,7 +1308,7 @@ int get_sample_inf() {
 
     variance = 0.0;
     for (i=0; i<=100000; i++) {
-      if (freq_accuracy[i] > 0) { 
+      if (freq_accuracy[i] > 0) {
         variance += pow((sample.accuracy_mean_filtered - i * 0.00001), 2) * freq_accuracy[i];
       }
     }
@@ -1883,7 +1883,7 @@ int simulate_by_sample() {
         digit_num2[3] = count_digit(len);
         digit_num[3] = (digit_num1[3] >= digit_num2[3]) ? digit_num1[3] : digit_num2[3];
 
-        fprintf(fp_maf, "a\ns ref"); 
+        fprintf(fp_maf, "a\ns ref");
         while (digit_num1[0] ++ < digit_num[0]) {
           fprintf(fp_maf, " ");
         }
@@ -1899,7 +1899,7 @@ int simulate_by_sample() {
           fprintf(fp_maf, " ");
         }
         fprintf(fp_maf, " %ld %s\n", genome.len, mut.maf_ref_seq);
-        fprintf(fp_maf, "s %s", id); 
+        fprintf(fp_maf, "s %s", id);
         while (digit_num2[0] ++ < digit_num[0]) {
           fprintf(fp_maf, " ");
         }
@@ -1990,7 +1990,7 @@ int simulate_by_qshmm() {
 
   // length distribution
   variance = pow(sim.len_sd, 2);
-  kappa = pow(sim.len_mean, 2) / variance; 
+  kappa = pow(sim.len_mean, 2) / variance;
   theta = variance / sim.len_mean;
   gamma = tgamma(kappa);
 
@@ -1998,7 +1998,7 @@ int simulate_by_qshmm() {
     prob2len[1] = int(sim.len_mean + 0.5);
     len_rand_value = 1;
   } else {
-    start_wk = 1; 
+    start_wk = 1;
     len_prob_total = 0.0;
     for (i=sim.len_min; i<=sim.len_max; i++) {
       len_prob_total += pow(i, kappa-1) * exp(-1 * i / theta) / pow(theta, kappa) / gamma;
@@ -2038,7 +2038,7 @@ int simulate_by_qshmm() {
   for (i=accuracy_min; i<=accuracy_max; i++) {
     freq_total += exp(0.22 * i);
   }
-  start_wk = 1; 
+  start_wk = 1;
   accuracy_prob_total = 0.0;
   for (i=accuracy_min; i<=accuracy_max; i++) {
     accuracy_prob_total += exp(0.22 * i) / freq_total;
@@ -2067,7 +2067,7 @@ int simulate_by_qshmm() {
   for (i=accuracy_min; i<=accuracy_max; i++) {
 
     if (qshmm.exist_hmm[i] == 1) {
-      start_wk = 1; 
+      start_wk = 1;
       qc_prob_total = 0.0;
 
       for (j=1; j<=STATE_MAX; j++) {
@@ -2092,7 +2092,7 @@ int simulate_by_qshmm() {
       qc_rand_value_init[i] = end_wk;
 
       for (j=1; j<=STATE_MAX; j++) {
-        start_wk = 1; 
+        start_wk = 1;
         qc_prob_total = 0.0;
 
         for (k=0; k<=93; k++) {
@@ -2118,7 +2118,7 @@ int simulate_by_qshmm() {
       }
 
       for (j=1; j<=STATE_MAX; j++) {
-        start_wk = 1; 
+        start_wk = 1;
         qc_prob_total = 0.0;
 
         for (k=1; k<=STATE_MAX; k++) {
@@ -2143,7 +2143,7 @@ int simulate_by_qshmm() {
         qc_rand_value_tran[i][j] = end_wk;
       }
     } else {
-      start_wk = 1; 
+      start_wk = 1;
       qc_prob_total = 0.0;
 
       for (j=0; j<=93; j++) {
@@ -2709,7 +2709,7 @@ int simulate_by_qshmm_trans() {
 
         nstart = 0;
         nend = 0;
-        nnum = 1; 
+        nnum = 1;
         for(i=1; i<=transcript.len; i++) {
           if ((i < transcript.len) && (transcript.seq[i-1] == transcript.seq[i])) {
             nend = i;
@@ -2781,7 +2781,7 @@ int simulate_by_qshmm_trans() {
 
       nstart = 0;
       nend = 0;
-      nnum = 1; 
+      nnum = 1;
       for(i=1; i<=transcript.len; i++) {
         if ((i < transcript.len) && (transcript.seq[i-1] == transcript.seq[i])) {
           nend = i;
@@ -3106,7 +3106,7 @@ int simulate_by_qshmm_templ() {
   for (i=accuracy_min; i<=accuracy_max; i++) {
     freq_total += exp(0.22 * i);
   }
-  start_wk = 1; 
+  start_wk = 1;
   accuracy_prob_total = 0.0;
   for (i=accuracy_min; i<=accuracy_max; i++) {
     accuracy_prob_total += exp(0.22 * i) / freq_total;
@@ -3135,7 +3135,7 @@ int simulate_by_qshmm_templ() {
   for (i=accuracy_min; i<=accuracy_max; i++) {
 
     if (qshmm.exist_hmm[i] == 1) {
-      start_wk = 1; 
+      start_wk = 1;
       qc_prob_total = 0.0;
 
       for (j=1; j<=STATE_MAX; j++) {
@@ -3160,7 +3160,7 @@ int simulate_by_qshmm_templ() {
       qc_rand_value_init[i] = end_wk;
 
       for (j=1; j<=STATE_MAX; j++) {
-        start_wk = 1; 
+        start_wk = 1;
         qc_prob_total = 0.0;
 
         for (k=0; k<=93; k++) {
@@ -3186,7 +3186,7 @@ int simulate_by_qshmm_templ() {
       }
 
       for (j=1; j<=STATE_MAX; j++) {
-        start_wk = 1; 
+        start_wk = 1;
         qc_prob_total = 0.0;
 
         for (k=1; k<=STATE_MAX; k++) {
@@ -3211,7 +3211,7 @@ int simulate_by_qshmm_templ() {
         qc_rand_value_tran[i][j] = end_wk;
       }
     } else {
-      start_wk = 1; 
+      start_wk = 1;
       qc_prob_total = 0.0;
 
       for (j=0; j<=93; j++) {
@@ -3632,7 +3632,7 @@ int simulate_by_errhmm() {
 
   // length distribution
   variance = pow(sim.len_sd, 2);
-  kappa = pow(sim.len_mean, 2) / variance; 
+  kappa = pow(sim.len_mean, 2) / variance;
   theta = variance / sim.len_mean;
   gamma = tgamma(kappa);
 
@@ -3640,7 +3640,7 @@ int simulate_by_errhmm() {
     prob2len[1] = int(sim.len_mean + 0.5);
     len_rand_value = 1;
   } else {
-    start_wk = 1; 
+    start_wk = 1;
     len_prob_total = 0.0;
     for (i=sim.len_min; i<=sim.len_max; i++) {
       len_prob_total += pow(i, kappa-1) * exp(-1 * i / theta) / pow(theta, kappa) / gamma;
@@ -3680,7 +3680,7 @@ int simulate_by_errhmm() {
   for (i=accuracy_min; i<=accuracy_max; i++) {
     freq_total += exp(0.22 * i);
   }
-  start_wk = 1; 
+  start_wk = 1;
   accuracy_prob_total = 0.0;
   for (i=accuracy_min; i<=accuracy_max; i++) {
     accuracy_prob_total += exp(0.22 * i) / freq_total;
@@ -3712,7 +3712,7 @@ int simulate_by_errhmm() {
       continue;
     }
 
-    start_wk = 1; 
+    start_wk = 1;
     err_prob_total = 0.0;
 
     for (j=1; j<=errhmm.state_max[i]; j++) {
@@ -3735,7 +3735,7 @@ int simulate_by_errhmm() {
     err_rand_value_init[i] = end_wk;
 
     for (j=1; j<=errhmm.state_max[i]; j++) {
-      start_wk = 1; 
+      start_wk = 1;
       err_prob_total = 0.0;
 
       emis2del[i][j] = int(errhmm.ep[i][j][3] * 1000 + 0.5);
@@ -3762,7 +3762,7 @@ int simulate_by_errhmm() {
     }
 
     for (j=1; j<=errhmm.state_max[i]; j++) {
-      start_wk = 1; 
+      start_wk = 1;
       err_prob_total = 0.0;
 
       for (k=1; k<=STATE_MAX; k++) {
@@ -3998,7 +3998,7 @@ int simulate_by_errhmm() {
       if (len < sim.res_len_min) {
         sim.res_len_min = len;
       }
-   
+
       value = 1.0 - ((double)mut.err_num / len);
       accuracy_total += value;
       acc_wk = (int)(value * 100000 + 0.5);
@@ -4165,7 +4165,7 @@ int simulate_by_errhmm_trans() {
 
   // length distribution
   variance = pow(sim.len_sd, 2);
-  kappa = pow(sim.len_mean, 2) / variance; 
+  kappa = pow(sim.len_mean, 2) / variance;
   theta = variance / sim.len_mean;
   gamma = tgamma(kappa);
 
@@ -4173,7 +4173,7 @@ int simulate_by_errhmm_trans() {
     prob2len[1] = int(sim.len_mean + 0.5);
     len_rand_value = 1;
   } else {
-    start_wk = 1; 
+    start_wk = 1;
     len_prob_total = 0.0;
     for (i=sim.len_min; i<=sim.len_max; i++) {
       len_prob_total += pow(i, kappa-1) * exp(-1 * i / theta) / pow(theta, kappa) / gamma;
@@ -4235,7 +4235,7 @@ int simulate_by_errhmm_trans() {
   for (i=accuracy_min; i<=accuracy_max; i++) {
     freq_total += exp(0.22 * i);
   }
-  start_wk = 1; 
+  start_wk = 1;
   accuracy_prob_total = 0.0;
   for (i=accuracy_min; i<=accuracy_max; i++) {
     accuracy_prob_total += exp(0.22 * i) / freq_total;
@@ -4267,7 +4267,7 @@ int simulate_by_errhmm_trans() {
       continue;
     }
 
-    start_wk = 1; 
+    start_wk = 1;
     err_prob_total = 0.0;
 
     for (j=1; j<=errhmm.state_max[i]; j++) {
@@ -4290,7 +4290,7 @@ int simulate_by_errhmm_trans() {
     err_rand_value_init[i] = end_wk;
 
     for (j=1; j<=errhmm.state_max[i]; j++) {
-      start_wk = 1; 
+      start_wk = 1;
       err_prob_total = 0.0;
 
       emis2del[i][j] = int(errhmm.ep[i][j][3] * 1000 + 0.5);
@@ -4315,7 +4315,7 @@ int simulate_by_errhmm_trans() {
     }
 
     for (j=1; j<=errhmm.state_max[i]; j++) {
-      start_wk = 1; 
+      start_wk = 1;
       err_prob_total = 0.0;
 
       for (k=1; k<=STATE_MAX; k++) {
@@ -4507,7 +4507,7 @@ int simulate_by_errhmm_trans() {
         mut.seq_right = mut.offset + mut.len;
         sim.res_num ++;
         //fprintf(stderr,"%d : %d : %d : %d : %d : %d : %d\n",sim.res_num,transcript.len,rank,mut.offset,mut.len,mut.seq_left,mut.seq_right);
- 
+
         for (j=0; j<mut.len; j++) {
           mut.seq[j] = transcript.seq[mut.offset + j];
           mut.hp[j] = transcript.hp[mut.offset + j];
@@ -4688,7 +4688,7 @@ int simulate_by_errhmm_trans() {
           if (len < sim.res_len_min) {
             sim.res_len_min = len;
           }
-   
+
           value = 1.0 - ((double)mut.err_num / len);
           accuracy_total += value;
           acc_wk = (int)(value * 100000 + 0.5);
@@ -4860,7 +4860,7 @@ int simulate_by_errhmm_templ() {
   for (i=accuracy_min; i<=accuracy_max; i++) {
     freq_total += exp(0.22 * i);
   }
-  start_wk = 1; 
+  start_wk = 1;
   accuracy_prob_total = 0.0;
   for (i=accuracy_min; i<=accuracy_max; i++) {
     accuracy_prob_total += exp(0.22 * i) / freq_total;
@@ -5832,7 +5832,7 @@ int count_digit(long num) {
   }
 
   return digit;
-}  
+}
 
 ///////////////////////////////////////////////////////
 // Function: revcomp - convert to reverse complement //
